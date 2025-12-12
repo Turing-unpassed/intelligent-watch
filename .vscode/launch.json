@@ -1,0 +1,68 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug with Daplink",
+            "cwd": "${workspaceRoot}",
+            "executable": "${workspaceRoot}/build/Debug/intelligent-watch.elf",
+            "request": "launch",
+            "type": "cortex-debug",
+            "device": "STM32F103C8",
+            "interface": "swd",
+            "servertype": "openocd",
+            "configFiles": ["${workspaceRoot}/Toolchain/openocd_dap.cfg"],
+            "svdFile": "${workspaceRoot}/Toolchain/STM32F103xx.svd",
+            "searchDir": ["${workspaceRoot}/Toolchain/"],
+            "runToEntryPoint": "main",
+            "showDevDebugOutput": "none",
+            "preLaunchTask": "Build-Debug",
+            "liveWatch": {
+                "enabled": true,
+                "samplesPerSecond": 10
+            },
+            "rttConfig": {
+                "enabled": true,
+                "address": "auto",
+                "decoders": [
+                    {
+                        "label": "SEGGER_RTT",
+                        "port": 0,
+                        "type": "console"
+                    }
+                ]
+            }
+        },
+        {
+            "name": "Debug with Jlink",
+            "cwd": "${workspaceFolder}",
+            "executable": "${workspaceRoot}/build/Debug/intelligent-watch.elf",
+            "request": "launch",
+            "type": "cortex-debug",
+            "runToEntryPoint": "main",
+            "interface": "swd",
+            "device": "STM32F103C8",
+            "svdFile": "${workspaceRoot}/Toolchain/STM32F103xx.svd",
+            "servertype": "jlink",
+            "preLaunchTask": "Build-Debug",
+            "liveWatch": {
+                "enabled": true,
+                "samplesPerSecond": 10
+            },
+            "rttConfig": {
+                "enabled": true,
+                "address": "auto",
+                "decoders": [
+                    {
+                        "label": "SEGGER_RTT",
+                        "port": 0,
+                        "type": "console"
+                    }
+                ]
+            }
+
+        }
+    ]
+}

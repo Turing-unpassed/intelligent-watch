@@ -1,0 +1,26 @@
+--cpu Cortex-M3
+"intelligent-watch\startup_stm32f103xb.o"
+"intelligent-watch\main.o"
+"intelligent-watch\gpio.o"
+"intelligent-watch\i2c.o"
+"intelligent-watch\stm32f1xx_it.o"
+"intelligent-watch\stm32f1xx_hal_msp.o"
+"intelligent-watch\stm32f1xx_hal_gpio_ex.o"
+"intelligent-watch\stm32f1xx_hal_i2c.o"
+"intelligent-watch\stm32f1xx_hal.o"
+"intelligent-watch\stm32f1xx_hal_rcc.o"
+"intelligent-watch\stm32f1xx_hal_rcc_ex.o"
+"intelligent-watch\stm32f1xx_hal_gpio.o"
+"intelligent-watch\stm32f1xx_hal_dma.o"
+"intelligent-watch\stm32f1xx_hal_cortex.o"
+"intelligent-watch\stm32f1xx_hal_pwr.o"
+"intelligent-watch\stm32f1xx_hal_flash.o"
+"intelligent-watch\stm32f1xx_hal_flash_ex.o"
+"intelligent-watch\stm32f1xx_hal_exti.o"
+"intelligent-watch\system_stm32f1xx.o"
+"intelligent-watch\oled.o"
+"intelligent-watch\oled_data.o"
+--strict --scatter "intelligent-watch\intelligent-watch.sct"
+--summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
+--info sizes --info totals --info unused --info veneers
+--list "intelligent-watch.map" -o intelligent-watch\intelligent-watch.axf

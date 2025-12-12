@@ -1,0 +1,82 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "cmake",
+			"label": "Build-Debug",
+			"command": "build",
+			"targets": [
+				"all"
+			],
+			"preset": "Debug",
+			"group": {
+				"kind": "build",
+				"isDefault": false
+			},
+			"problemMatcher": [],
+			"detail": "CMake template build task"
+		},
+		{
+			"type": "cmake",
+			"label": "Build-Release",
+			"command": "build",
+			"targets": [
+				"all"
+			],
+			"preset": "Release",
+			"group":{
+				"kind": "build",
+				"isDefault": false
+			},
+			"problemMatcher": [],
+			"detail": "CMake template build task"
+		},
+		// {
+		// 	"type": "cmake",
+		// 	"command": "clean",
+		// 	"label": "Clean",
+		// 	"group": {
+		// 		"kind": "build",
+		// 		"isDefault": false
+		// 	},
+		// 	"problemMatcher": [],
+		// 	"detail": "CMake template clean task"
+		// },
+		{
+            "label": "clean",
+            "type": "shell",
+            "command": "rm -r -Force build",
+			"group": {
+				"kind": "build",
+				"isDefault": false
+			}
+        },
+		{
+			"type": "cmake",
+			"label": "Download_Jlink",
+			"command": "build",
+			"group": {
+				"kind": "build",
+				"isDefault": false
+			},
+			"targets": [
+				"Download_Jlink"
+			],
+			"dependsOn": "Build-Debug",
+		},
+		{
+			"type": "cmake",
+			"label": "Download_Daplink",
+			"command": "build",
+			"group": {
+				"kind": "build",
+				"isDefault": false
+			},
+			"targets": [
+				"Download_Daplink"
+			],
+			"dependsOn": "Build-Debug",
+		}
+
+	]
+}
