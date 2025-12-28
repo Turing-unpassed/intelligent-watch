@@ -18,8 +18,11 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "dma.h"
 #include "i2c.h"
 #include "rtc.h"
+#include "spi.h"
+#include "usart.h"
 #include "gpio.h"
 
 /* Private includes ----------------------------------------------------------*/
@@ -89,15 +92,15 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+  MX_DMA_Init();
   MX_I2C1_Init();
   MX_RTC_Init();
+  MX_USART1_UART_Init();
+  MX_SPI2_Init();
   /* USER CODE BEGIN 2 */
   OLED_Init();
   OLED_Printf(0,0,OLED_6X8,"test");
   OLED_Update();
-  LOG_INFO("This is an info log.");
-  LOG_WARNING("This is a warning log.");
-  LOG_ERROR("This is an error log.");
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -106,7 +109,7 @@ int main(void)
   {
     
     /* USER CODE END WHILE */
-    
+
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
@@ -177,8 +180,7 @@ void Error_Handler(void)
   }
   /* USER CODE END Error_Handler_Debug */
 }
-
-#ifdef  USE_FULL_ASSERT
+#ifdef USE_FULL_ASSERT
 /**
   * @brief  Reports the name of the source file and the source line number
   *         where the assert_param error has occurred.

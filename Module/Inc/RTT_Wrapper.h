@@ -17,7 +17,7 @@ extern "C"
 #ifdef LOG_ENABLE
 
     #ifdef LOG_INFO_ENABLE
-        #define LOG_INFO(format,...)   SEGGER_RTT_printf(0, "%s/%s-%d: "RTT_CTRL_TEXT_WHITE format "\n", \
+        #define LOG_INFO(format,...)   SEGGER_RTT_printf(0, " %s/%s-%d: " RTT_CTRL_TEXT_WHITE format "\n", \
                                                             RTT_CTRL_RESET \
                                                             __FILE__, \
                                                             __FUNCTION__, \
@@ -28,7 +28,7 @@ extern "C"
     #endif   
 
     #ifdef LOG_WARNING_ENABLE
-        #define LOG_WARNING(format,...) SEGGER_RTT_printf(0,"%s/%s-%d: "RTT_CTRL_TEXT_YELLOW format "\n", \
+        #define LOG_WARNING(format,...) SEGGER_RTT_printf(0," %s/%s-%d: " RTT_CTRL_TEXT_YELLOW format "\n", \
                                                             RTT_CTRL_RESET \
                                                             __FILE__, \
                                                             __FUNCTION__, \
@@ -39,7 +39,7 @@ extern "C"
     #endif
 
     #ifdef LOG_ERROR_ENABLE
-        #define LOG_ERROR(format,...)  SEGGER_RTT_printf(0, "%s/%s-%d: "RTT_CTRL_TEXT_RED format "\n", \
+        #define LOG_ERROR(format,...)  SEGGER_RTT_printf(0, " %s/%s-%d: " RTT_CTRL_TEXT_RED format "\n", \
                                                             RTT_CTRL_RESET \
                                                             __FILE__, \
                                                             __FUNCTION__, \

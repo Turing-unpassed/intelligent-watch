@@ -23,8 +23,6 @@ endif()
 # Set the project name
 set(CMAKE_PROJECT_NAME intelligent-watch)
 
-# Include toolchain file
-include("cmake/gcc-arm-none-eabi.cmake")
 
 # Enable compile command to ease indexing with e.g. clangd
 set(CMAKE_EXPORT_COMPILE_COMMANDS TRUE)
@@ -49,8 +47,10 @@ target_link_directories(${CMAKE_PROJECT_NAME} PRIVATE
 )
 
 file(GLOB_RECURSE SOURCES
-    "Hardware/*.c"
-    "Hardware/*.cpp"
+    "Module/Src/*.c"
+    "Module/Src/*.cpp"
+    "BSP/Src/*.c"
+    "BSP/Src/*.cpp"
 )
 
 # Add sources to executable
@@ -59,7 +59,8 @@ target_sources(${CMAKE_PROJECT_NAME} PRIVATE
     ${SOURCES}
 )
 
-include_sub_directories_recursively(${CMAKE_PROJECT_NAME} ${CMAKE_SOURCE_DIR}/Hardware)
+include_sub_directories_recursively(${CMAKE_PROJECT_NAME} ${CMAKE_SOURCE_DIR}/Module/Inc)
+include_sub_directories_recursively(${CMAKE_PROJECT_NAME} ${CMAKE_SOURCE_DIR}/BSP/Inc)
 
 # Add include paths
 target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE

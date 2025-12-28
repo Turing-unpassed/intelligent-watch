@@ -2,10 +2,6 @@
     "configurations": [
         {
             "name": "STM32",
-            "includePath": [
-                "${workspaceFolder}/**",
-                "${workspaceFolder}/Hardware"
-            ],
             "defines": [
                 "_DEBUG",
                 "UNICODE",
