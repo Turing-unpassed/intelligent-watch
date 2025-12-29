@@ -53,6 +53,7 @@ void UART_Base::UART_Send(uint8_t* pData, uint16_t Size)
             break;
         case UART_DMA:
             ret = HAL_UART_Transmit_DMA(huart,pData,Size);
+            __HAL_DMA_DISABLE_IT(huart->hdmatx, DMA_IT_HT);
             if(ret == HAL_OK){
                 LOG_INFO("UART send success");
             }else if (ret==HAL_ERROR)
@@ -103,6 +104,7 @@ void UART_Base::UART_Receive(uint8_t* pData, uint16_t Size)
             break;
         case UART_DMA:
             ret = HAL_UART_Receive_DMA(huart,pData,Size);
+            __HAL_DMA_DISABLE_IT(huart->hdmatx, DMA_IT_HT);
             if(ret == HAL_OK){
                 LOG_INFO("UART receive success");
             }else if (ret==HAL_ERROR)
@@ -142,6 +144,7 @@ void UART_Base::UART_Receive(uint8_t* pData, uint16_t Size)
             break;
         case UART_IDLE_DMA:
             ret = HAL_UARTEx_ReceiveToIdle_DMA(huart,pData,Size);
+            __HAL_DMA_DISABLE_IT(huart->hdmatx, DMA_IT_HT);
             if(ret == HAL_OK){
                 LOG_INFO("UART receive success");
             }else if (ret==HAL_ERROR)
