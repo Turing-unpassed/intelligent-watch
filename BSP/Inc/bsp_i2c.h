@@ -6,10 +6,10 @@ extern "C"
 {
 #endif
 
-/*鍦ㄦ澶勫紩鐢ㄥ閮ㄦ枃浠讹細       begin*/	
+/*在此处引用外部文件：       begin*/	
 #include "i2c.h"
 #include "RTT_Wrapper.h"
-/*寮曠敤澶栭儴鏂囦欢end*/	
+/*引用外部文件end*/	
 
 #ifdef __cplusplus
 }

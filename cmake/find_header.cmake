@@ -1,13 +1,13 @@
 function(include_sub_directories_recursively target root_dir)
-    if (IS_DIRECTORY ${root_dir})               # å½“å‰è·¯å¾„æ˜¯ä¸€ä¸ªç›®å½•å—ï¼Œæ˜¯çš„è¯å°±åŠ å…¥åˆ°åŒ…å«ç›®å½•
+    if (IS_DIRECTORY ${root_dir})               # µ±Ç°Â·¾¶ÊÇÒ»¸öÄ¿Â¼Âğ£¬ÊÇµÄ»°¾Í¼ÓÈëµ½°üº¬Ä¿Â¼
         message("include dir: " ${root_dir})
         target_include_directories(${target} PUBLIC ${root_dir})
     endif()
 
-    file(GLOB ALL_SUB RELATIVE ${root_dir} ${root_dir}/*) # è·å¾—å½“å‰ç›®å½•ä¸‹çš„æ‰€æœ‰æ–‡ä»¶ï¼Œè®©å¦‚ALL_SUBåˆ—è¡¨ä¸­
+    file(GLOB ALL_SUB RELATIVE ${root_dir} ${root_dir}/*) # »ñµÃµ±Ç°Ä¿Â¼ÏÂµÄËùÓĞÎÄ¼ş£¬ÈÃÈçALL_SUBÁĞ±íÖĞ
     foreach(sub ${ALL_SUB})
         if (IS_DIRECTORY ${root_dir}/${sub})
-            include_sub_directories_recursively(${target} ${root_dir}/${sub}) # å¯¹å­ç›®å½•é€’å½’è°ƒç”¨ï¼ŒåŒ…å«
+            include_sub_directories_recursively(${target} ${root_dir}/${sub}) # ¶Ô×ÓÄ¿Â¼µİ¹éµ÷ÓÃ£¬°üº¬
         endif()
     endforeach()
 endfunction()

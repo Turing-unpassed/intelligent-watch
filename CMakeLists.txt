@@ -84,11 +84,11 @@ target_link_libraries(${CMAKE_PROJECT_NAME}
 )
 
 add_custom_command(
-    TARGET ${CMAKE_PROJECT_NAME} POST_BUILD # 指定自定义构建的对象是.elf
-    COMMAND ${CMAKE_OBJCOPY} -Oihex $<TARGET_FILE:${CMAKE_PROJECT_NAME}> ${PROJECT_BINARY_DIR}/${CMAKE_PROJECT_NAME}.hex # 使用objcopy工具将elf文件格式转换成hex文件
-    COMMAND ${CMAKE_OBJCOPY} -Obinary $<TARGET_FILE:${CMAKE_PROJECT_NAME}> ${PROJECT_BINARY_DIR}/${CMAKE_PROJECT_NAME}.bin # 使用ogjcopy工具将elf文件转换为二进制格式
+    TARGET ${CMAKE_PROJECT_NAME} POST_BUILD # ָ���Զ��幹���Ķ�����.elf
+    COMMAND ${CMAKE_OBJCOPY} -Oihex $<TARGET_FILE:${CMAKE_PROJECT_NAME}> ${PROJECT_BINARY_DIR}/${CMAKE_PROJECT_NAME}.hex # ʹ��objcopy���߽�elf�ļ���ʽת����hex�ļ�
+    COMMAND ${CMAKE_OBJCOPY} -Obinary $<TARGET_FILE:${CMAKE_PROJECT_NAME}> ${PROJECT_BINARY_DIR}/${CMAKE_PROJECT_NAME}.bin # ʹ��ogjcopy���߽�elf�ļ�ת��Ϊ�����Ƹ�ʽ
     COMMENT "EXCUTABLE SIZE:"
-    COMMAND ${CMAKE_SIZE} ${CMAKE_PROJECT_NAME}.elf # 使用size工具显示elf文件的大小信息
+    COMMAND ${CMAKE_SIZE} ${CMAKE_PROJECT_NAME}.elf # ʹ��size������ʾelf�ļ��Ĵ�С��Ϣ
 )
 
 add_custom_target(Download_Jlink 
