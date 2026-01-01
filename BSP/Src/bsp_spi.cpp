@@ -81,6 +81,10 @@ void SPI_Base::SPI_Receive(uint8_t* pData, uint16_t Size)
 	}
 }
 
+void SPI_Base::SPI_Rx_Callback(){
+	
+}
+
 extern "C" void HAL_SPI_RxCpltCallback(SPI_HandleTypeDef *hspi)
 {
 	for (uint8_t i = 0; i < SPI_Base::SPI_BUS_Index; i++)

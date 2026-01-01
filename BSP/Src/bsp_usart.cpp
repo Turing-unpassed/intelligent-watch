@@ -160,6 +160,8 @@ void UART_Base::UART_Receive(uint8_t* pData, uint16_t Size)
     }
 }
 
+void UART_Base::UART_Rx_Callback(){}
+
 extern "C" void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart){
     for(uint8_t i=0;i<UART_Base::UART_INSTANCES_Index;i++){
         if(UART_Base::UART_INSTANCES[i]->huart==huart){

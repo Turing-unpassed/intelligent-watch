@@ -57,7 +57,7 @@
 			"command": "build",
 			"group": {
 				"kind": "build",
-				"isDefault": false
+				"isDefault": true
 			},
 			"targets": [
 				"Download_Jlink"

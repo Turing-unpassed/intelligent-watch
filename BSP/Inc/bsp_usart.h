@@ -43,7 +43,7 @@ public:
     UART_Base(UART_HandleTypeDef* huart,UART_Mode tx_mode,UART_Mode rx_mode,uint16_t timeout);
     virtual void UART_Send(uint8_t* pData, uint16_t Size);
     virtual void UART_Receive(uint8_t* pData, uint16_t Size);
-    virtual void UART_Rx_Callback()=0;
+    virtual void UART_Rx_Callback();
 };
 
 #endif

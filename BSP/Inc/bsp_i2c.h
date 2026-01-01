@@ -49,7 +49,7 @@ public:
     I2C_Base(I2C_HandleTypeDef* hi2c,I2C_ROLE role,I2C_Mode mode,uint16_t DevAddress,uint16_t MemAddress,uint16_t MemAddSize,uint16_t timeout=500);
     virtual void I2C_Send(uint8_t* pData, uint16_t Size);
     virtual void I2C_Receive(uint8_t* pData, uint16_t Size);
-    virtual void I2C_Rx_Callback()=0;
+    virtual void I2C_Rx_Callback();
 };
 
 #endif

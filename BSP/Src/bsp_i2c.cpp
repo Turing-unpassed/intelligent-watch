@@ -125,6 +125,11 @@ void I2C_Base::I2C_Receive(uint8_t* pData, uint16_t Size)
     }
 }
 
+void I2C_Base::I2C_Rx_Callback()
+{
+
+}
+
 extern "C" void HAL_I2C_MasterRxCpltCallback(I2C_HandleTypeDef *hi2c){
     for(uint8_t i=0;i<I2C_Base::I2C_BUS_Index;i++){
         if(I2C_Base::I2C_BUS[i]->hi2c==hi2c){

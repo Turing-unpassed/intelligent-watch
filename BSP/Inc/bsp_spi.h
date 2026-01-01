@@ -40,7 +40,7 @@ public:
     SPI_Base(SPI_HandleTypeDef* hspi, SPI_Mode mode, uint16_t timeout=500);
     virtual void SPI_Send(uint8_t* pData, uint16_t Size);
     virtual void SPI_Receive(uint8_t* pData, uint16_t Size);
-    virtual void SPI_Rx_Callback()=0;
+    virtual void SPI_Rx_Callback();
 };
 
 #endif

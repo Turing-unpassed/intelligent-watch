@@ -22,6 +22,8 @@
 
 /* USER CODE BEGIN 0 */
 
+#include "stm32f1xx_hal_rtc_ex.h"
+
 /* USER CODE END 0 */
 
 RTC_HandleTypeDef hrtc;
@@ -45,7 +47,7 @@ void MX_RTC_Init(void)
   */
   hrtc.Instance = RTC;
   hrtc.Init.AsynchPrediv = RTC_AUTO_1_SECOND;
-  hrtc.Init.OutPut = RTC_OUTPUTSOURCE_NONE;
+  hrtc.Init.OutPut = RTC_OUTPUTSOURCE_ALARM;
   if (HAL_RTC_Init(&hrtc) != HAL_OK)
   {
     Error_Handler();
@@ -53,28 +55,58 @@ void MX_RTC_Init(void)
 
   /* USER CODE BEGIN Check_RTC_BKUP */
 
+  uint8_t needInit = 1;
+  if (HAL_RTCEx_BKUPRead(&hrtc, RTC_BKP_DR1) == 0xA5A5u)
+  {
+    RTC_DateTypeDef savedDate = {0};
+    savedDate.Year = (uint8_t)(HAL_RTCEx_BKUPRead(&hrtc, RTC_BKP_DR2) & 0xFFu);
+    savedDate.Month = (uint8_t)(HAL_RTCEx_BKUPRead(&hrtc, RTC_BKP_DR3) & 0xFFu);
+    savedDate.Date = (uint8_t)(HAL_RTCEx_BKUPRead(&hrtc, RTC_BKP_DR4) & 0xFFu);
+
+    /* Basic validation; if invalid, fall back to default init. */
+    if (savedDate.Year <= 99u && savedDate.Month >= 1u && savedDate.Month <= 12u &&
+        savedDate.Date >= 1u && savedDate.Date <= 31u)
+    {
+      if (HAL_RTC_SetDate(&hrtc, &savedDate, RTC_FORMAT_BIN) == HAL_OK)
+      {
+        needInit = 0;
+        goto rtc_init_done;
+      }
+    }
+  }
+
   /* USER CODE END Check_RTC_BKUP */
 
   /** Initialize RTC and set the Time and Date
   */
-  sTime.Hours = 0x15;
-  sTime.Minutes = 0x0;
-  sTime.Seconds = 0x0;
+  sTime.Hours = 19;
+  sTime.Minutes = 0;
+  sTime.Seconds = 0;
 
-  if (HAL_RTC_SetTime(&hrtc, &sTime, RTC_FORMAT_BCD) != HAL_OK)
+  if (HAL_RTC_SetTime(&hrtc, &sTime, RTC_FORMAT_BIN) != HAL_OK)
   {
     Error_Handler();
   }
-  DateToUpdate.WeekDay = RTC_WEEKDAY_SATURDAY;
-  DateToUpdate.Month = RTC_MONTH_NOVEMBER;
-  DateToUpdate.Date = 0x8;
-  DateToUpdate.Year = 0x25;
+  DateToUpdate.WeekDay = RTC_WEEKDAY_THURSDAY;
+  DateToUpdate.Month = RTC_MONTH_JANUARY;
+  DateToUpdate.Date = 1;
+  DateToUpdate.Year = 26;
 
-  if (HAL_RTC_SetDate(&hrtc, &DateToUpdate, RTC_FORMAT_BCD) != HAL_OK)
+  if (HAL_RTC_SetDate(&hrtc, &DateToUpdate, RTC_FORMAT_BIN) != HAL_OK)
   {
     Error_Handler();
   }
   /* USER CODE BEGIN RTC_Init 2 */
+
+rtc_init_done:
+  if (needInit)
+  {
+    /* Persist date for the next reset (STM32F1 HAL keeps date in RAM). */
+    HAL_RTCEx_BKUPWrite(&hrtc, RTC_BKP_DR2, (uint32_t)DateToUpdate.Year);
+    HAL_RTCEx_BKUPWrite(&hrtc, RTC_BKP_DR3, (uint32_t)DateToUpdate.Month);
+    HAL_RTCEx_BKUPWrite(&hrtc, RTC_BKP_DR4, (uint32_t)DateToUpdate.Date);
+    HAL_RTCEx_BKUPWrite(&hrtc, RTC_BKP_DR1, 0xA5A5u);
+  }
 
   /* USER CODE END RTC_Init 2 */
 

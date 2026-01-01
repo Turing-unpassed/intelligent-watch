@@ -29,6 +29,7 @@
 /* USER CODE BEGIN Includes */
 #include "OLED.h"
 #include "RTT_Wrapper.h"
+#include "Time_Display.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -99,15 +100,14 @@ int main(void)
   MX_SPI2_Init();
   /* USER CODE BEGIN 2 */
   OLED_Init();
-  OLED_Printf(0,0,OLED_6X8,"test");
-  OLED_Update();
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-    
+    Time_Display();
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
