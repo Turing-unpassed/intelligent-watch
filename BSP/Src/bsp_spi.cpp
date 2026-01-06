@@ -19,6 +19,18 @@ SPI_Base::SPI_Base(SPI_HandleTypeDef* hspi, SPI_Mode mode, uint16_t timeout)
 	}
 }
 
+void SPI_Base::CS_HIGH(){
+	if(hspi->Instance==SPI2){
+		HAL_GPIO_WritePin(SPI2_CS_GPIO_Port,SPI2_CS_Pin,GPIO_PIN_SET);
+	}
+}
+
+void SPI_Base::CS_LOW(){
+	if(hspi->Instance==SPI2){
+		HAL_GPIO_WritePin(SPI2_CS_GPIO_Port,SPI2_CS_Pin,GPIO_PIN_RESET);
+	}
+}
+
 void SPI_Base::SPI_Send(uint8_t* pData, uint16_t Size)
 {
 	HAL_StatusTypeDef ret;

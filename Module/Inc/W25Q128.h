@@ -12,6 +12,8 @@ extern "C" {
 }
 #endif
 
+#define W25Q128_GB2312_BASE_ADDR					0x00
+
 #ifdef __cplusplus
 
 #define W25Q64_WRITE_ENABLE							0x06
@@ -43,12 +45,31 @@ extern "C" {
 #define W25Q64_OCTAL_WORD_READ_QUAD_IO				0xE3
 #define W25Q64_DUMMY_BYTE							0xFF
 
+#define W25Q128_PAGE_SIZE							256
+#define W25Q128_BUFFER_SIZE						    128
+#define W25Q128_Tx_SIZE						        4
 
+
+
+//0-216575存放了按照GB2312编码排序的6763个汉字16×16点阵数据（包含5个占位符），每个汉字32字节
+//216576-217087为空，方便后续擦除不会破坏汉字点阵数据
+//217088-217878存放了表盘图像点阵数据
 class W25Q128 : public SPI_Base
 {
 private:
+    uint8_t TxBuffer[W25Q128_Tx_SIZE];
 
 public:
+    uint8_t RxBuffer[W25Q128_BUFFER_SIZE];
+
+    W25Q128(SPI_HandleTypeDef* hspi, SPI_Mode mode, uint16_t timeout);
+    void WriteEnable();
+    void WaitForWriteEnd();
+    void ReadData(uint32_t ReadAddr, uint16_t Size);
+    void PageProgram(uint32_t WriteAddr,uint8_t* pData,uint16_t Size);
+    void SectorErase(uint32_t SectorAddr);
+    void ReadJEDECID(uint8_t* MID, uint16_t* DID);
+    void ChipErase();
 };
 
 #endif

@@ -19,10 +19,29 @@
   */
 
 #include "OLED.h"
+#include "OLED_FontFlash.h"
 #include <string.h>
 #include <math.h>
 #include <stdio.h>
 #include <stdarg.h>
+static uint8_t OLED_GB2312_IsValid(uint8_t highByte, uint8_t lowByte)
+{
+	return (highByte >= 0xA1 && highByte <= 0xF7 && lowByte >= 0xA1 && lowByte <= 0xFE);
+}
+
+static uint8_t OLED_HZK16_ReadGlyph(uint8_t highByte, uint8_t lowByte, uint8_t out32[32])
+{
+	if (!OLED_GB2312_IsValid(highByte, lowByte))
+	{
+		LOG_ERROR("Invalid GB2312 code");
+		return 0;
+	}
+
+	uint32_t glyphIndex = (uint32_t)(highByte - 0xB0) * 94u + (uint32_t)(lowByte - 0xA1);
+	uint32_t addr = (uint32_t)W25Q128_GB2312_BASE_ADDR + glyphIndex * 32u;
+	OLED_Flash_Read(addr, out32, 32);
+	return 1;
+}
 
 /**
   * 数据存储格式：
@@ -552,10 +571,6 @@ void OLED_ShowChar(int16_t X, int16_t Y, char Char, uint8_t FontSize)
 	{
 		/*将ASCII字模库OLED_F6x8的指定数据以6*8的图像格式显示*/
 		OLED_ShowImage(X, Y, 6, 8, OLED_F6x8[Char - ' ']);
-	}else if(FontSize == OLED_12X24)	//字体为宽12像素，高24像素
-	{
-		/*将ASCII字模库OLED_F12x24的指定数据以12*24的图像格式显示*/
-		OLED_ShowImage(X, Y, 12, 24, OLED_F12x24[Char - ' ']);
 	}
 }
 
@@ -580,7 +595,6 @@ void OLED_ShowString(int16_t X, int16_t Y, char *String, uint8_t FontSize)
 	char SingleChar[5];
 	uint8_t CharLength = 0;
 	uint16_t XOffset = 0;
-	uint16_t pIndex;
 	
 	while (String[i] != '\0')	//遍历字符串
 	{
@@ -659,20 +673,21 @@ void OLED_ShowString(int16_t X, int16_t Y, char *String, uint8_t FontSize)
 		}
 		else					//否则，即多字节字符
 		{
-			/*遍历整个字模库，从字模库中寻找此字符的数据*/
-			/*如果找到最后一个字符（定义为空字符串），则表示字符未在字模库定义，停止寻找*/
-			for (pIndex = 0; strcmp(OLED_CF16x16[pIndex].Index, "") != 0; pIndex ++)
-			{
-				/*找到匹配的字符*/
-				if (strcmp(OLED_CF16x16[pIndex].Index, SingleChar) == 0)
-				{
-					break;		//跳出循环，此时pIndex的值为指定字符的索引
-				}
-			}
 			if (FontSize == OLED_8X16)		//给定字体为8*16点阵
 			{
-				/*将字模库OLED_CF16x16的指定数据以16*16的图像格式显示*/
-				OLED_ShowImage(X + XOffset, Y, 16, 16, OLED_CF16x16[pIndex].Data);
+				/*从W25Q128中读取HZK16字模并显示（GB2312双字节编码）*/
+				uint8_t glyphImg[32];
+				uint8_t highByte = (uint8_t)SingleChar[0];
+				uint8_t lowByte = (uint8_t)SingleChar[1];
+				if (OLED_HZK16_ReadGlyph(highByte, lowByte, glyphImg))
+				{
+					OLED_ShowImage(X + XOffset, Y, 16, 16, glyphImg);
+				}
+				else
+				{
+					OLED_ShowChar(X + XOffset, Y, '?', OLED_6X8);
+					LOG_ERROR("Invalid GB2312 code");
+				}
 				XOffset += 16;
 			}
 			else if (FontSize == OLED_6X8)	//给定字体为6*8点阵
@@ -901,6 +916,15 @@ void OLED_ShowImage(int16_t X, int16_t Y, uint8_t Width, uint8_t Height, const u
 	}
 }
 
+void OLED_ShowW25Q128Image(int16_t X, int16_t Y,const Image_t *Image){
+	uint32_t addr = Image->Address;
+	uint8_t width = Image->Width;
+	uint8_t height = Image->Height;
+	uint16_t size = Image->Len;
+	uint8_t buffer[size];
+	OLED_Flash_Read(addr, buffer, size);
+	OLED_ShowImage(X, Y, width, height, buffer);
+}
 /**
   * 函    数：OLED使用printf函数打印格式化字符串（支持ASCII码和中文混合写入）
   * 参    数：X 指定格式化字符串左上角的横坐标，范围：-32768~32767，屏幕区域：0~127

@@ -30,6 +30,7 @@
 #include "OLED.h"
 #include "RTT_Wrapper.h"
 #include "Time_Display.h"
+#include "Task.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -99,15 +100,14 @@ int main(void)
   MX_USART1_UART_Init();
   MX_SPI2_Init();
   /* USER CODE BEGIN 2 */
-  OLED_Init();
-
+  Task_Init(); 
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-    Time_Display();
+    Task_Loop();
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

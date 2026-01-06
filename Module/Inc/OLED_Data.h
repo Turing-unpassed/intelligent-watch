@@ -26,33 +26,38 @@ typedef struct
 /*ASCII字模数据声明*/
 extern const uint8_t OLED_F8x16[][16];
 extern const uint8_t OLED_F6x8[][6];
-extern const uint8_t OLED_F12x24[][36];
-/*汉字字模数据声明*/
-extern const ChineseCell_t OLED_CF16x16[];
+
+typedef struct {
+	uint32_t Address;  // 图像在 W25Q128 中的起始地址
+	uint8_t Width;     // 图像宽度，单位：像素
+	uint8_t Height;    // 图像高度，单位：像素
+	uint16_t Len;      // 图像数据长度，单位：字节
+}Image_t;
 
 /*图像数据声明*/
 extern const uint8_t Diode[];
-extern const uint8_t t0[];
-extern const uint8_t t1[];
-extern const uint8_t t2[];
-extern const uint8_t t3[];
-extern const uint8_t t4[];
-extern const uint8_t t5[];
-extern const uint8_t t6[];
-extern const uint8_t t7[];
-extern const uint8_t t8[];
-extern const uint8_t t9[];
 
-extern const uint8_t i0[];
-extern const uint8_t i1[];
-extern const uint8_t i2[];
-extern const uint8_t i3[];
-extern const uint8_t i4[];
-extern const uint8_t i5[];
-extern const uint8_t i6[];
-extern const uint8_t i7[];
-extern const uint8_t i8[];
-extern const uint8_t i9[];
+extern const Image_t t0;
+extern const Image_t t1;
+extern const Image_t t2;
+extern const Image_t t3;
+extern const Image_t t4;
+extern const Image_t t5;
+extern const Image_t t6;
+extern const Image_t t7;
+extern const Image_t t8;
+extern const Image_t t9;
+
+extern const Image_t i0;
+extern const Image_t i1;
+extern const Image_t i2;
+extern const Image_t i3;
+extern const Image_t i4;
+extern const Image_t i5;
+extern const Image_t i6;
+extern const Image_t i7;
+extern const Image_t i8;
+extern const Image_t i9;
 
 extern const uint8_t Batery[];
 /*按照上面的格式，在这个位置加入新的图像数据声明*/

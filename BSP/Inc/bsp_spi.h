@@ -9,6 +9,7 @@ extern "C"
 /*在此处引用外部文件：       begin*/	
 #include "spi.h"
 #include "RTT_Wrapper.h"
+#include "gpio.h"
 /*引用外部文件end*/	
 
 #ifdef __cplusplus
@@ -30,14 +31,17 @@ class SPI_Base
 {
 private:
     SPI_Mode mode;
-    uint16_t timeout;
+    
 
 public:
     SPI_HandleTypeDef* hspi;
+    uint16_t timeout;
     static SPI_Base* SPI_BUS[MAX_SPI_BUS_NUM];
     static uint8_t SPI_BUS_Index;
 
     SPI_Base(SPI_HandleTypeDef* hspi, SPI_Mode mode, uint16_t timeout=500);
+    void CS_HIGH();
+    void CS_LOW();
     virtual void SPI_Send(uint8_t* pData, uint16_t Size);
     virtual void SPI_Receive(uint8_t* pData, uint16_t Size);
     virtual void SPI_Rx_Callback();

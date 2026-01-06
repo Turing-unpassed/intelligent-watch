@@ -18,7 +18,7 @@ void Time_Display(void)
 
         if (sDate.Year != lastYear || sDate.Month != lastMonth || sDate.Date != lastDate)
         {
-            HAL_PWR_EnableBkUpAccess();
+            HAL_PWR_EnableBkUpAcces();
             __HAL_RCC_BKP_CLK_ENABLE();
 
             HAL_RTCEx_BKUPWrite(&hrtc, RTC_BKP_DR2, (uint32_t)sDate.Year);
@@ -32,8 +32,8 @@ void Time_Display(void)
         }
     }
 
-    static const uint8_t* const tDigits[10] = {t0, t1, t2, t3, t4, t5, t6, t7, t8, t9};
-    static const uint8_t* const iDigits[10] = {i0, i1, i2, i3, i4, i5, i6, i7, i8, i9};
+    static const Image_t *tDigits[10] = {&t0, &t1, &t2, &t3, &t4, &t5, &t6, &t7, &t8, &t9};
+    static const Image_t *iDigits[10] = {&i0, &i1, &i2, &i3, &i4, &i5, &i6, &i7, &i8, &i9};
 
     const int16_t x0 = 13;
     const int16_t y0 = 18;
@@ -46,25 +46,25 @@ void Time_Display(void)
     const int16_t gap = 4;
     const uint8_t colonW = 3;
 
-    uint8_t hh = sTime.Hours;
-    uint8_t mm = sTime.Minutes;
-    uint8_t ss = sTime.Seconds;
+    uint8_t h = sTime.Hours;
+    uint8_t m = sTime.Minutes;
+    uint8_t s = sTime.Seconds;
 
-    if (hh > 23) hh %= 24;
-    if (mm > 59) mm %= 60;
-    if (ss > 59) ss %= 60;
+    if (h > 23) h %= 24;
+    if (m > 59) m %= 60;
+    if (s > 59) s %= 60;
 
-    uint8_t h10 = hh / 10;
-    uint8_t h01 = hh % 10;
-    uint8_t m10 = mm / 10;
-    uint8_t m01 = mm % 10;
-    uint8_t s10 = ss / 10;
-    uint8_t s01 = ss % 10;
+    uint8_t h10 = h / 10;
+    uint8_t h01 = h % 10;
+    uint8_t m10 = m / 10;
+    uint8_t m01 = m % 10;
+    uint8_t s10 = s / 10;
+    uint8_t s01 = s % 10;
 
     int16_t x = x0;
-    OLED_ShowImage(x, y0, tW, tH, tDigits[h10]);
+    OLED_ShowW25Q128Image(x, y0, tDigits[h10]);
     x += tW + gap;
-    OLED_ShowImage(x, y0, tW, tH, tDigits[h01]);
+    OLED_ShowW25Q128Image(x, y0, tDigits[h01]);
     x += tW + gap;
 
     /* ':' between HH and MM */
@@ -73,16 +73,16 @@ void Time_Display(void)
     OLED_DrawRectangle(x + 1, y0 + 18, 2, 2, OLED_FILLED);
     x += colonW + gap;
 
-    OLED_ShowImage(x, y0, tW, tH, tDigits[m10]);
+    OLED_ShowW25Q128Image(x, y0, tDigits[m10]);
     x += tW + gap;
-    OLED_ShowImage(x, y0, tW, tH, tDigits[m01]);
+    OLED_ShowW25Q128Image(x, y0, tDigits[m01]);
     x += tW + gap + 2;
 
     /* Seconds (SS) using i font, bottom-aligned with HH:MM */
     int16_t ySec = y0 + (int16_t)tH - (int16_t)iH;
-    OLED_ShowImage(x, ySec, iW, iH, iDigits[s10]);
+    OLED_ShowW25Q128Image(x, ySec, iDigits[s10]);
     x += iW + gap;
-    OLED_ShowImage(x, ySec, iW, iH, iDigits[s01]);
+    OLED_ShowW25Q128Image(x, ySec, iDigits[s01]);
 
     OLED_Printf(0,0,OLED_6X8,"%02d-%02d-20%02d",sDate.Date,sDate.Month,sDate.Year);
     OLED_Printf(0,56,OLED_6X8,"Week:%d",sDate.WeekDay);
